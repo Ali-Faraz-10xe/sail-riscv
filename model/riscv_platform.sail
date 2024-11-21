@@ -209,9 +209,14 @@ function clint_dispatch() -> unit = {
   then print_platform("clint::tick mtime <- " ^ BitStr(mtime));
   mip[MTI] = 0b0;
   if mtimecmp <=_u mtime then {
+    mip[MTI] = 0b1;
     if   get_config_print_platform()
-    then print_platform(" clint timer pending at mtime " ^ BitStr(mtime));
-    mip[MTI] = 0b1
+    then print_platform(" clint timer pending at mtime " ^ BitStr(mtime) ^ " (mip.MTI <- " ^ BitStr(mip[MTI]) ^ ")");
+  }
+  else if mtimecmp >_u mtime then {
+    mip[MTI] = 0b0;
+    if   get_config_print_platform()
+    then print_platform(" clint timer pending at mtime " ^ BitStr(mtime) ^ " (mip.MTI <- " ^ BitStr(mip[MTI]) ^ ")");
   }
 }
 
